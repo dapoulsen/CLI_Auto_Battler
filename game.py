@@ -1,27 +1,94 @@
 from hero import *
+from enemy import *
 from readchar import readkey, key
+import random
+import time
 
 class Game:
     def __init__(self):
         self.status = False
         self.rounds = 0
         self.hero = None
+        self.slain_enemies = 0
     
     def start_menu_decider(self):
-        print("You have the option to\n" \
+        print("You have the option to:\n" \
         "[I]nspect your here\n" \
-        "[U]pgrade a piece of equipment\n")
+        "[S]tart the battle!\n" \
+        "[E]xit the game")
         k = readkey()
         if k == "i" or k == "I":
             print("Your inv")
-        elif k == "u" or k =="U":
-            print("Your upgrade")
+        elif k == "s" or k =="S":
+            self.start_battle()
+        elif k == "e" or k == "E":
+            self.end_game()
     
     def inspect_hero(self):
         pass
 
     def upgrade_equipment_prompt(self):
-        pass
+        self.start_menu_decider()
+
+    def start_battle(self):
+        self.rounds += 1
+        print("You have entered a battle. Good luck!")
+        dead_hero = False
+        dead_enemy = False
+        match self.slain_enemies:
+            case 0:
+                enemy = Viper(25, 5, 3)
+                random.seed()
+                while (not dead_hero and not dead_enemy):
+                    print("------------------------------------")                
+                    if random.randint(0, 10) > 7:
+                        enemy.bite_attack(self.hero)
+                        print(f"You now have {self.hero.health} health left")                        
+                    else:
+                        enemy.basic_attack(self.hero)
+                        print(f"You now have {self.hero.health} health left")
+                    
+                    dead_hero = self.hero_is_dead()
+                    if dead_hero:
+                        print(f"You died. {enemy.name} killed you. Unfortunately...\n" \
+                            f"You have tried {self.rounds} round so far. \n" \
+                            "Good news is you can upgrade an item!!")
+                        self.upgrade_equipment_prompt()
+                        break
+                
+                    self.hero.attack(enemy)
+                    print(f"{enemy.name} now have {enemy.health} health left")
+                    dead_enemy = self.enemy_is_dead(enemy)
+
+                    time.sleep(1)  
+                
+                if dead_enemy:
+                    self.slain_enemies += 1
+                    print(f"You have defeated {enemy.name}! Congratulations! \n" \
+                        f"It only took {self.rounds} rounds to get this far!\n" \
+                        "Now you get to upgrade an item before moving on.")
+                    self.upgrade_equipment_prompt()  
+            case 1:
+                pass
+            case 2:
+                pass
+            case 3:
+                pass
+            case 4:
+                pass
+    
+    def hero_is_dead(self):
+        if self.hero.health > 0:
+            return False
+        else:
+            return True
+    
+    def enemy_is_dead(self, enemy):
+        if enemy.health > 0:
+            return False
+        else:
+            return True
+    
 
     def print_welcome_message(self):
         self.hero = Hero()
