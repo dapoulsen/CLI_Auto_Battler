@@ -10,6 +10,7 @@ def main():
         k = readkey()
         if k == "x":
             game.end_game()
+            exit(0)
         
 
 

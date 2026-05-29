@@ -8,8 +8,16 @@ class Enemy:
         self.damage = damage
 
     def basic_attack(self, enemy):
+        if enemy.armor.value >= 0 and enemy.armor.value - self.damage >= 0:
+            enemy.armor.value -= self.damage
+        elif enemy.armor.value >= 0:
+            health_dmg = self.damage - enemy.armor.value
+            enemy.armor.value = 0
+            enemy.health -= health_dmg
+        else:
+            enemy.health -= self.damage
+
         print(f"{self.name} does a basic attack on {enemy.name} dealing {self.damage} damage!")
-        enemy.health -= self.damage
 
 class Viper(Enemy):
     def __init__(self, health, armor, damage):

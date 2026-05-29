@@ -18,19 +18,28 @@ class Game:
         "[E]xit the game")
         k = readkey()
         if k == "i" or k == "I":
-            print("Your inv")
+            self.inspect_hero()
         elif k == "s" or k =="S":
             self.start_battle()
         elif k == "e" or k == "E":
             self.end_game()
     
     def inspect_hero(self):
-        pass
+        print(self.hero)
 
     def upgrade_equipment_prompt(self):
-        self.start_menu_decider()
+        print("[W]eapon upgrade\n[A]rmor upgrade")
+        k = readkey()
+        if k == "w" or k == "W":
+            self.hero.weapon.upgrade_tier()
+            self.start_menu_decider()
+        elif k == "a" or "A" == k:
+            self.hero.armor.upgrade_armor()
+            self.start_menu_decider()
+        
 
     def start_battle(self):
+        self.hero.hero_reset()
         self.rounds += 1
         print("You have entered a battle. Good luck!")
         dead_hero = False
@@ -43,10 +52,10 @@ class Game:
                     print("------------------------------------")                
                     if random.randint(0, 10) > 7:
                         enemy.bite_attack(self.hero)
-                        print(f"You now have {self.hero.health} health left")                        
+                        print(f"You now have {self.hero.health} health and {self.hero.armor.value} armor left")                        
                     else:
                         enemy.basic_attack(self.hero)
-                        print(f"You now have {self.hero.health} health left")
+                        print(f"You now have {self.hero.health} health and {self.hero.armor.value} armor left")
                     
                     dead_hero = self.hero_is_dead()
                     if dead_hero:
@@ -57,7 +66,7 @@ class Game:
                         break
                 
                     self.hero.attack(enemy)
-                    print(f"{enemy.name} now have {enemy.health} health left")
+                    print(f"{enemy.name} now have {enemy.health} health and {enemy.armor} armor left")
                     dead_enemy = self.enemy_is_dead(enemy)
 
                     time.sleep(1)  
