@@ -6,7 +6,7 @@ class Weapon:
         self.damage = 2
 
     def upgrade_tier(self):
-        if self.tier == len(self._tiers):
+        if self.tier == len(self._tiers)-1:
             print("You have maximum tier weapon!")
             return
         self.tier += 1

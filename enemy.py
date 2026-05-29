@@ -72,9 +72,9 @@ class BigUglyBear(Enemy):
         if randnum < 30 and randnum > 90:
             self.claw_attack(enemy)
         elif randnum >= 30 and randnum <= 90:
-            self.weak_attack(enemy)
-        else:
             self.basic_attack(enemy)
+        else:
+            self.weak_attack(enemy)
 
 class Spider(Enemy):
     def __init__(self, name, health, armor, damage):
@@ -110,7 +110,7 @@ class Knight(Enemy):
         elif randnum > 85:
             self.double_attack(enemy)
         else:
-            self.basic_attack()
+            self.basic_attack(enemy)
 
 class Dragon(Enemy):
     def __init__(self, name, health, armor, damage):
@@ -124,11 +124,11 @@ class Dragon(Enemy):
         if randnum <= 2:
             self.miss(enemy)
         elif randnum > 2 and randnum <= 70:
-            self.basic_attack()
+            self.basic_attack(enemy)
         elif randnum > 70 and randnum <= 80:
-            self.armor_melt()
+            self.armor_melt(enemy)
         else:
-            self.piercing_bite()
+            self.piercing_bite(enemy)
         
     def armor_melt(self, enemy):
         print(f"{self.name}'s breath melts ALL of {enemy.name}'s armor!")       

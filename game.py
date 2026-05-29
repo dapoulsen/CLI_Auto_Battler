@@ -27,6 +27,7 @@ class Game:
     def inspect_hero(self):
         self.hero.hero_reset()
         print(self.hero)
+        self.start_menu_decider()
 
 
     def upgrade_equipment_prompt(self):
@@ -50,13 +51,21 @@ class Game:
                 enemy = Viper(10, 5, 3)
                 self.simulate_battle(enemy)
             case 1:
-                pass
+                self.hero.health += 10
+                enemy = BigUglyBear(15, 15, 8)
+                self.simulate_battle(enemy)
             case 2:
-                pass
+                self.hero.health += 20
+                enemy = Spider("Disgusting Spider", 45, 10, 12)
+                self.simulate_battle(enemy)
             case 3:
-                pass
+                self.hero.health += 30
+                enemy = Knight("Dark Knight", 100, 30, 15)
+                self.simulate_battle(enemy)
             case 4:
-                pass
+                self.hero.health += 50
+                enemy = Dragon("Dragon", 200, 50, 25)
+                self.simulate_battle(enemy)
     
     def simulate_battle(self, enemy):
         dead_hero = False
@@ -70,6 +79,7 @@ class Game:
             
             dead_hero = self.hero_is_dead()
             if dead_hero:
+                print("------------------------------------")  
                 print(f"You died. {enemy.name} killed you. Unfortunately...\n" \
                     f"You have tried {self.rounds} round so far. \n" \
                     "Good news is you can upgrade an item!!")
@@ -83,11 +93,11 @@ class Game:
             time.sleep(1)  
         
         if dead_enemy:
+            print("------------------------------------")  
             self.slain_enemies += 1
             print(f"You have defeated {enemy.name}! Congratulations! \n" \
-                f"It only took {self.rounds} rounds to get this far!\n" \
-                "Now you get to upgrade an item before moving on.")
-            self.upgrade_equipment_prompt() 
+                f"It only took {self.rounds} rounds to get this far!\n")
+            self.start_menu_decider() 
 
 
     def hero_is_dead(self):

@@ -25,7 +25,6 @@ class Hero:
     def hero_reset(self):
         self.health = 20
         self.armor.reset_armor()
-    
 
     def __str__(self):
         return f"{self.name} has {self.health} health. Is wearing {self.armor.show_tier()} armor and uses a {self.weapon.show_tier()} weapon."

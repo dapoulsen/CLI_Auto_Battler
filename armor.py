@@ -6,7 +6,7 @@ class Armor:
         self.value = 0
     
     def upgrade_armor(self):
-        if self.tier == len(self._tiers):
+        if self.tier == len(self._tiers)-1:
             print("You have the best armor there is!")
             return
         self.tier += 1
