@@ -25,7 +25,9 @@ class Game:
             self.end_game()
     
     def inspect_hero(self):
+        self.hero.hero_reset()
         print(self.hero)
+
 
     def upgrade_equipment_prompt(self):
         print("[W]eapon upgrade\n[A]rmor upgrade")
@@ -42,41 +44,11 @@ class Game:
         self.hero.hero_reset()
         self.rounds += 1
         print("You have entered a battle. Good luck!")
-        dead_hero = False
-        dead_enemy = False
+        
         match self.slain_enemies:
             case 0:
-                enemy = Viper(25, 5, 3)
-                random.seed()
-                while (not dead_hero and not dead_enemy):
-                    print("------------------------------------")                
-                    if random.randint(0, 10) > 7:
-                        enemy.bite_attack(self.hero)
-                        print(f"You now have {self.hero.health} health and {self.hero.armor.value} armor left")                        
-                    else:
-                        enemy.basic_attack(self.hero)
-                        print(f"You now have {self.hero.health} health and {self.hero.armor.value} armor left")
-                    
-                    dead_hero = self.hero_is_dead()
-                    if dead_hero:
-                        print(f"You died. {enemy.name} killed you. Unfortunately...\n" \
-                            f"You have tried {self.rounds} round so far. \n" \
-                            "Good news is you can upgrade an item!!")
-                        self.upgrade_equipment_prompt()
-                        break
-                
-                    self.hero.attack(enemy)
-                    print(f"{enemy.name} now have {enemy.health} health and {enemy.armor} armor left")
-                    dead_enemy = self.enemy_is_dead(enemy)
-
-                    time.sleep(1)  
-                
-                if dead_enemy:
-                    self.slain_enemies += 1
-                    print(f"You have defeated {enemy.name}! Congratulations! \n" \
-                        f"It only took {self.rounds} rounds to get this far!\n" \
-                        "Now you get to upgrade an item before moving on.")
-                    self.upgrade_equipment_prompt()  
+                enemy = Viper(10, 5, 3)
+                self.simulate_battle(enemy)
             case 1:
                 pass
             case 2:
@@ -86,6 +58,38 @@ class Game:
             case 4:
                 pass
     
+    def simulate_battle(self, enemy):
+        dead_hero = False
+        dead_enemy = False
+        random.seed()
+        while (not dead_hero and not dead_enemy):
+            print("------------------------------------")                
+
+            enemy.attack(self.hero) 
+            print(f"You now have {self.hero.health} health and {self.hero.armor.value} armor left")                        
+            
+            dead_hero = self.hero_is_dead()
+            if dead_hero:
+                print(f"You died. {enemy.name} killed you. Unfortunately...\n" \
+                    f"You have tried {self.rounds} round so far. \n" \
+                    "Good news is you can upgrade an item!!")
+                self.upgrade_equipment_prompt()
+                break
+        
+            self.hero.attack(enemy)
+            print(f"{enemy.name} now have {enemy.health} health and {enemy.armor} armor left")
+            dead_enemy = self.enemy_is_dead(enemy)
+
+            time.sleep(1)  
+        
+        if dead_enemy:
+            self.slain_enemies += 1
+            print(f"You have defeated {enemy.name}! Congratulations! \n" \
+                f"It only took {self.rounds} rounds to get this far!\n" \
+                "Now you get to upgrade an item before moving on.")
+            self.upgrade_equipment_prompt() 
+
+
     def hero_is_dead(self):
         if self.hero.health > 0:
             return False

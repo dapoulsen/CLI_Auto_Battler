@@ -1,3 +1,4 @@
+import random
 
 class Enemy:
 
@@ -18,6 +19,9 @@ class Enemy:
             enemy.health -= self.damage
 
         print(f"{self.name} does a basic attack on {enemy.name} dealing {self.damage} damage!")
+    
+    def attack(self, enemy):
+        self.basic_attack(enemy)
 
 class Viper(Enemy):
     def __init__(self, health, armor, damage):
@@ -26,3 +30,9 @@ class Viper(Enemy):
     def bite_attack(self, enemy):
         print(f"{self.name} bites {enemy.name} for {self.damage + 2} damage")
         enemy.health -= self.damage + 2
+    
+    def attack(self, enemy):
+        if random.randint(0, 10) > 7:
+            self.bite_attack(enemy)
+        else:
+            self.basic_attack(enemy)
